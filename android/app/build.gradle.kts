@@ -22,7 +22,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    defaultConfig {.
+    defaultConfig {
         applicationId = "com.example.midterm_crossplatform1"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
