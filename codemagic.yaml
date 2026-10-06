@@ -16,7 +16,7 @@ workflows:
         script: flutter analyze
       - name: Run tests
         script: flutter test
-      - name: Build Release APK
-        script: flutter build apk --release
+      - name: Build Debug APK
+        script: flutter build apk --debug
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
