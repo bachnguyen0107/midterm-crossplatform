@@ -18,7 +18,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          cache: true # Bật cache tích hợp sẵn của subosito action
+          cache: true
 
       - name: Cache Pub & Gradle dependencies
         uses: actions/cache@v4
@@ -36,6 +36,7 @@ jobs:
 
       - name: Analyze code
         run: flutter analyze
+
       - name: Run tests
         run: flutter test
 
@@ -52,8 +53,24 @@ jobs:
 
       - name: Build Release APK
         run: flutter build apk --release
-      - name: Run tests
-        run: flutter test
 
-      - name: Build debug APK
-        run: flutter build apk --debug
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/*.apk
+
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - run: flutter pub get
+      - run: flutter build web --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web
