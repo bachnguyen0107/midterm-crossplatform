@@ -23,10 +23,11 @@ workflows:
         script: |
               flutter pub get
       - name: Analyze code
+        script: |
+              flutter analyze
       - name: Accept Android licenses
         script: |
             yes | flutter doctor --android-licenses
-        script: flutter analyze
       - name: Run tests
         script: flutter test
       - name: Build Debug APK
