@@ -12,6 +12,7 @@ workflows:
     scripts:
       - name: Set up Android keystore and key.properties
         script: |
+            mkdir -p android/app
             keytool -genkey -v -keystore android/app/release-key.jks -storetype PKCS12 -keysize 2048 -validity 10000 -alias $CM_KEY_ALIAS -storepass $CM_STORE_PASS -keypass $CM_KEY_PASS -dname "CN=Codemagic, OU=Dev, O=Org, L=City, S=State, C=US"
             cat <<EOF > android/key.properties
             storePassword=$CM_STORE_PASS
