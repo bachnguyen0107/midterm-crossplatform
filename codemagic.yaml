@@ -9,11 +9,14 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+    cache:
+      cache_paths:
+        - ~/.pub-cache
+        - ~/.gradle/caches
     scripts:
-      - name: Generate Keystore & key.properties dynamically
+      - name: Set up Android keystore and key.properties
         script: |
-          mkdir -p android/app
-          keytool -genkey -v -keystore android/app/release-key.jks -storetype PKCS12 -keyalg RSA -keysize 2048 -validity 10000 -alias $CM_KEY_ALIAS -storepass $CM_STORE_PASS -keypass $CM_KEY_PASS -dname "CN=Codemagic, OU=Dev, O=Org, L=City, S=State, C=US"
+          echo $CM_KEYSTORE | base64 --decode > android/app/release-key.jks
           cat <<EOF > android/key.properties
           storePassword=$CM_STORE_PASS
           keyPassword=$CM_KEY_PASS
