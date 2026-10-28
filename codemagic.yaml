@@ -12,7 +12,7 @@ workflows:
     scripts:
       - name: Set up Android keystore and key.properties
         script: |
-            echo $CM_KEYSTORE | base64 --decode > android/app/release-key.jks
+            keytool -genkey -v -keystore android/app/release-key.jks -storetype PKCS12 -keysize 2048 -validity 10000 -alias $CM_KEY_ALIAS -storepass $CM_STORE_PASS -keypass $CM_KEY_PASS -dname "CN=Codemagic, OU=Dev, O=Org, L=City, S=State, C=US"
             cat <<EOF > android/key.properties
             storePassword=$CM_STORE_PASS
             keyPassword=$CM_KEY_PASS
@@ -23,6 +23,9 @@ workflows:
         script: |
               flutter pub get
       - name: Analyze code
+      - name: Accept Android licenses
+        script: |
+            yes | flutter doctor --android-licenses
         script: flutter analyze
       - name: Run tests
         script: flutter test
