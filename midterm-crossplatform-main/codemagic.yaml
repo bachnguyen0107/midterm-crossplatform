@@ -1,0 +1,39 @@
+workflows:
+  flutter-release-build:
+    name: Flutter Release APK Build Workflow
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      groups:
+        - keystore_credentials
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Generate Keystore & key.properties dynamically
+        script: |
+          mkdir -p android
+          keytool -genkey -v -keystore android/release-key.jks -storetype PKCS12 -keyalg RSA -keysize 2048 -validity 10000 -alias $CM_KEY_ALIAS -storepass $CM_STORE_PASS -keypass $CM_KEY_PASS -dname "CN=Codemagic, OU=Dev, O=Org, L=City, S=State, C=US"
+          cat <<EOF > android/key.properties
+          storePassword=$CM_STORE_PASS
+          keyPassword=$CM_KEY_PASS
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=release-key.jks
+          EOF
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Accept Android licenses
+        script: |
+          yes | flutter doctor --android-licenses
+      - name: Analyze code
+        script: |
+          flutter analyze
+      - name: Run unit tests
+        script: |
+          flutter test
+      - name: Build Release APK
+        script: |
+          flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
