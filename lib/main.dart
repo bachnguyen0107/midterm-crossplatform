@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'converter.dart';
 
+const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: 'dev');
+
 void main() {
   runApp(const MyApp());
 }
@@ -57,8 +59,9 @@ class _ConverterPageState extends State<ConverterPage> {
     final result = _direction == ConversionDirection.celsiusToFahrenheit
         ? celsiusToFahrenheit(value)
         : fahrenheitToCelsius(value);
-    final unit =
-        _direction == ConversionDirection.celsiusToFahrenheit ? '°F' : '°C';
+    final unit = _direction == ConversionDirection.celsiusToFahrenheit
+        ? '°F'
+        : '°C';
 
     setState(() {
       _errorText = null;
@@ -69,7 +72,7 @@ class _ConverterPageState extends State<ConverterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Temperature Converter')),
+      appBar: AppBar(title: const Text('Temperature Converter ($appVersion)')),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

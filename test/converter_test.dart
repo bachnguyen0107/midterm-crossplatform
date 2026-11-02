@@ -27,8 +27,7 @@ void main() {
 
     test('round trip matches original value', () {
       const original = 36.6;
-      final roundTripped =
-          fahrenheitToCelsius(celsiusToFahrenheit(original));
+      final roundTripped = fahrenheitToCelsius(celsiusToFahrenheit(original));
       expect(roundTripped, closeTo(original, 0.0001));
     });
   });

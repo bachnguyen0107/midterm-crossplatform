@@ -1,0 +1,26 @@
+name: Notify on CI failure
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+jobs:
+  discord:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord notification
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          AUTHOR: ${{ github.event.workflow_run.head_commit.author.name }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+        run: |
+          payload=$(jq -n \
+            --arg repo "$REPO" --arg branch "$BRANCH" --arg sha "${SHA:0:7}" \
+            --arg author "$AUTHOR" --arg url "$RUN_URL" \
+            '{content: "❌ CI failed in \($repo)\nBranch: \($branch)\nCommit: \($sha)\nAuthor: \($author)\nLog: \($url)"}')
+          curl -sS -X POST -H "Content-Type: application/json" -d "$payload" "$WEBHOOK"

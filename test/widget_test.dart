@@ -34,8 +34,9 @@ void main() {
     expect(find.text('Please enter a valid number'), findsOneWidget);
   });
 
-  testWidgets('switches direction and converts Fahrenheit to Celsius',
-      (tester) async {
+  testWidgets('switches direction and converts Fahrenheit to Celsius', (
+    tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
 
     await tester.tap(find.byKey(const Key('directionDropdown')));
