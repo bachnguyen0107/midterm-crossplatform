@@ -267,4 +267,9 @@ codemagic.yaml             # Codemagic pipeline used for the comparison
 - **The CI web job runs independently.** In `ci.yml`, the web job does not depend on the test job. We noticed this in the quality-gate demo: `build-and-test` failed on the `+ 23` defect, but `build-web` still passed and produced a web artifact. The release workflow avoids this because both platform builds depend on the test job.
 - **Android rollback has a version-code restriction.** An older APK cannot simply be reinstalled over a newer version because Android rejects a lower version code. To roll back an Android app, a new fixed release must be published with a higher version code.
 - **Codemagic uses a separate keystore.** The Codemagic APK is signed with a different key from the GitHub Actions APK, so the two cannot be installed over each other on the same device.
-- **Some actions still run on Node.js 20.** Every workflow run shows a deprecation warning for `actions/checkout@v4`, `actions/cache@v4`, and `actions/upload-artifact@v4`. Upgrading to newer action versions is left as future work.
+## 9. Third-party components
+- `subosito/flutter-action` – installs and caches the Flutter SDK in GitHub Actions.
+- `softprops/action-gh-release` – creates GitHub Releases with the APK attached.
+- Official GitHub actions: `actions/checkout`, `actions/cache`, `actions/upload-artifact`, `actions/upload-pages-artifact`, `actions/deploy-pages`.
+- Dart packages: `flutter_lints` (lint rules) and `integration_test` (end-to-end tests), both from the Flutter SDK.
+- The application code was written by the team; no external application template was used.
