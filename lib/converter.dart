@@ -1,5 +1,5 @@
 double celsiusToFahrenheit(double celsius) {
-  return celsius * 9 / 5 + 32;
+  return celsius * 9 / 5 + 232;
 }
 
 double fahrenheitToCelsius(double fahrenheit) {
